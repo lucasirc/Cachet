@@ -63,6 +63,35 @@ class Incident extends Model implements HasPresenter
     ];
 
     /**
+     * The sortable fields.
+     *
+     * @var string[]
+     */
+    public $sortable = [
+        'id',
+        'name',
+        'status',
+        'visible',
+        'message',
+    ];
+
+    /**
+     * Adds a sort scope.
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeSort($query, $column, $direction)
+    {
+        if (!in_array($column, $this->sortable)) {
+            return $query;
+        }
+
+        return $query->orderBy($column, $direction);
+    }
+
+    /**
      * Finds all visible incidents.
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
